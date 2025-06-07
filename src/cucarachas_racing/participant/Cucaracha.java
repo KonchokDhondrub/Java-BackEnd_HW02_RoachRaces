@@ -17,6 +17,7 @@ public class Cucaracha extends Thread {
 
     @Override
     public void run() {
+        System.out.println("Cucorachos Nr.: " + nr + " started the race!");
         for (int i = 0; i < rounds; i++) {
 
             try {
@@ -25,5 +26,6 @@ public class Cucaracha extends Thread {
                 throw new RuntimeException(e);
             }
         }
+//        System.out.println("Cucorachos Nr.: " + nr + " финишировал!");
     }
 }
