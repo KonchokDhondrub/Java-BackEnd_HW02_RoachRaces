@@ -3,8 +3,8 @@ package cucarachas_racing.participant;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cucaracha extends Thread {
-    private int nr;
-    private int rounds;
+    private final int nr;
+    private final int rounds;
 
     public Cucaracha(int nr, int rounds) {
         this.nr = nr;
