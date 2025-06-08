@@ -7,23 +7,35 @@ import java.util.Scanner;
 public class Hippodrome {
     public static void main(String[] args) throws InterruptedException {
 
+        // Setting participants and rounds amount
         System.out.print("Set amount of participant: ");
         int participant = menu(2);
         System.out.print("Set amount of rounds: ");
         int rounds = menu(1);
 
-
+        // Announcing the start of the race
         System.out.println("Participants: " + participant + ", Rounds: " + rounds);
         System.out.println("Starting the race!\n");
 
+        // Starting the race
         Cucaracha[] participants = new Cucaracha[participant];
         for (int i = 0; i < participants.length; i++) {
             participants[i] = new Cucaracha((i + 1), rounds);
             participants[i].start();
         }
 
-        boolean winnerDeclared = false;
+        // Winner catcher
+        int winner = 0;
+        while (winner < 1) {
+            for (Cucaracha c : participants) {
+                if (!c.isAlive()) {
+                    winner = c.getNr();
+                    break;
+                }
+            }
+        }
 
+        // Waiting all participants to finish
         for (Cucaracha c : participants) {
             try {
                 c.join();
@@ -31,16 +43,10 @@ public class Hippodrome {
                 e.printStackTrace();
             }
         }
-        while (!winnerDeclared) {
-            for (Cucaracha c : participants) {
-                if (!c.isAlive()) {
-                    winnerDeclared = true;
-                    System.out.println("\n*********************************************");
-                    System.out.println("*** Congratulations to Cucaracho Nr. " + c.getNr() + "!!! ***");
-                    break;
-                }
-            }
-        }
+
+        // Winner announcement
+        System.out.println("\n*********************************************");
+        System.out.println("*** Congratulations to Cucaracho Nr. " + winner + "!!! ***");
     }
 
     public static int menu(int minValue) {
