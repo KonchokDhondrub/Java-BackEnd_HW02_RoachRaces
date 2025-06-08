@@ -5,7 +5,7 @@ import cucarachas_racing.participant.Cucaracha;
 import java.util.Scanner;
 
 public class Hippodrome {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         System.out.print("Set amount of participant: ");
         int participant = menu(2);
@@ -23,11 +23,20 @@ public class Hippodrome {
         }
 
         boolean winnerDeclared = false;
+
+        for (Cucaracha c : participants) {
+            try {
+                c.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         while (!winnerDeclared) {
             for (Cucaracha c : participants) {
                 if (!c.isAlive()) {
-                    System.out.println("Congratulations to Cucaracho Nr. " + c.getNr() + " finished first!");
                     winnerDeclared = true;
+                    System.out.println("\n*********************************************");
+                    System.out.println("*** Congratulations to Cucaracho Nr. " + c.getNr() + "!!! ***");
                     break;
                 }
             }

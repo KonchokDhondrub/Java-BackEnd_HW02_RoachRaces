@@ -17,15 +17,15 @@ public class Cucaracha extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Cucorachos Nr.: " + nr + " started the race!");
+        System.out.println("Cucoracho Nr: " + nr + " started the race!");
         for (int i = 0; i < rounds; i++) {
-
             try {
                 Thread.sleep(ThreadLocalRandom.current().nextInt(2, 6));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            System.out.println("Nr: " + nr + " finished lap: " + (i + 1));
         }
-//        System.out.println("Cucorachos Nr.: " + nr + " финишировал!");
+        System.out.println("======== Nr: " + nr + " FINISHED! ========");
     }
 }
