@@ -6,47 +6,29 @@ import java.util.Scanner;
 
 public class Hippodrome {
     public static void main(String[] args) throws InterruptedException {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // Setting participants and rounds amount
         System.out.print("Set amount of participant: ");
         int participant = menu(2);
         System.out.print("Set amount of rounds: ");
         int rounds = menu(1);
+        Cucaracha.setRounds(rounds);
 
         // Announcing the start of the race
         System.out.println("Participants: " + participant + ", Rounds: " + rounds);
         System.out.println("Starting the race!\n");
 
         // Starting the race
-        Cucaracha[] participants = new Cucaracha[participant];
-        for (int i = 0; i < participants.length; i++) {
-            participants[i] = new Cucaracha((i + 1), rounds);
-            participants[i].start();
-        }
+        Thread[] participants = startRace(participant);
 
-        // Winner catcher
-        int winner = 0;
-        while (winner < 1) {
-            for (Cucaracha c : participants) {
-                if (!c.isAlive()) {
-                    winner = c.getNr();
-                    break;
-                }
-            }
-        }
 
         // Waiting all participants to finish
-        for (Cucaracha c : participants) {
-            try {
-                c.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        waitingRaceEnd(participants);
 
         // Winner announcement
-        System.out.println("\n*********************************************");
-        System.out.println("*** Congratulations to Cucaracho Nr. " + winner + "!!! ***");
+        System.out.println("\n******************************************");
+        System.out.println("*** Congratulations to " + Cucaracha.getWinner() + "!!! ***");
     }
 
     public static int menu(int minValue) {
@@ -66,5 +48,26 @@ public class Hippodrome {
             }
         }
         return result;
+    }
+
+    public static Thread[] startRace(int participant) {
+        Thread[] threads = new Thread[participant];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(new Cucaracha("Cucaracho #" + (i + 1)));
+        }
+        for (int i = 0; i < threads.length; i++) {
+            threads[i].start();
+        }
+        return threads;
+    }
+
+    public static void waitingRaceEnd(Thread[] participants) {
+        for (int i = 0; i < participants.length; i++) {
+            try {
+                participants[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
